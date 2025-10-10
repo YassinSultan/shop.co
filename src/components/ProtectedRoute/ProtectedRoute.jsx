@@ -1,0 +1,11 @@
+import React from "react";
+import { Navigate } from "react-router";
+// import style from "./ProtectedRoute.module.css";
+export default function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return children;
+  } else {
+    return <Navigate to="/login" replace />;
+  }
+}
