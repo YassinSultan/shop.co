@@ -1,34 +1,28 @@
 import React from "react";
-import { FaHeart, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import {
+  FaHeart,
+  FaRegStar,
+  FaSpinner,
+  FaStar,
+  FaStarHalfAlt,
+} from "react-icons/fa";
 import { Link } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../services/productService";
 import { useCart } from "../../hooks/useCart";
 import ProductSkeleton from "../ProductSkelton/ProductSkelton";
-import { addProductToWishlistAPI } from "../../services/wishlistService";
-import { toast } from "react-toastify";
+import { useWishlist } from "../../hooks/useWishlist";
+import Loading from "../Loading/Loading";
 // import style from "./Products.module.css";
 export default function Products({ queryName = "products", ...filters }) {
   const { addToCart, addToCartLoading } = useCart();
-
+  const { addToWishlist, addToWishlistLoading } = useWishlist();
   let { data, isLoading } = useQuery({
     queryKey: [`${queryName}`],
     queryFn: () => getProducts({ ...filters }),
     gcTime: 5 * 60 * 1000, // 5 minutes
     // staleTime: 5 * 60 * 1000, // 5 minutes
     select: (data) => data.data.data,
-  });
-
-  // wishList mutation
-  const wishListMutation = useMutation({
-    mutationKey: ["addProductToWishlist"],
-    mutationFn: ({ productId }) => addProductToWishlistAPI(productId),
-    onSuccess: (res) => {
-      toast.success(res.message);
-    },
-    onError: () => {
-      toast.error("Failed to add product to wishlist");
-    },
   });
 
   // Loading
@@ -38,7 +32,7 @@ export default function Products({ queryName = "products", ...filters }) {
   }
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
         {data.map((product) => {
           // calculate stars
           const fullStars = Math.floor(product.ratingsAverage);
@@ -106,21 +100,25 @@ export default function Products({ queryName = "products", ...filters }) {
                       productId: product._id,
                     })
                   }
-                  disabled={addToCartLoading}
+                  disabled={addToCartLoading(product._id)}
                   className="btn-primary flex-1"
                 >
-                  {addToCartLoading ? "Adding..." : "Add To Cart"}
+                  {addToCartLoading(product._id) ? "Adding..." : "Add to cart"}
                 </button>
                 <button
                   onClick={() =>
-                    wishListMutation.mutate({
+                    addToWishlist({
                       productId: product._id,
                     })
                   }
-                  disabled={wishListMutation.isLoading}
+                  disabled={addToWishlistLoading(product._id)}
                   className="btn-primary h-full "
                 >
-                  {wishListMutation.isPending ? "..." : <FaHeart />}
+                  {addToWishlistLoading(product._id) ? (
+                    <FaSpinner className="animate-spin" />
+                  ) : (
+                    <FaHeart />
+                  )}
                 </button>
               </div>
             </div>

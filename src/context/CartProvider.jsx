@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getCartAPI,
@@ -13,7 +13,7 @@ import { CartContext } from "./CartContext";
 export default function CartProvider({ children }) {
   const { token } = useAuth();
   const queryClient = useQueryClient();
-
+  const [loadingIds, setLoadingIds] = useState([]);
   // ✅ Fetch the cart (React Query handles caching and refetching automatically)
   const {
     data: cart,
@@ -35,6 +35,13 @@ export default function CartProvider({ children }) {
     },
     onError: () => {
       toast.error("Failed to add product to cart");
+    },
+    onMutate: ({ productId }) => {
+      setLoadingIds((prev) => [...prev, productId]); // show loading indicator for the specific product
+    },
+
+    onSettled: (_, __, { productId }) => {
+      setLoadingIds((prev) => prev.filter((id) => id !== productId));
     },
   });
 
@@ -71,7 +78,7 @@ export default function CartProvider({ children }) {
     addToCart: addToCart.mutate,
     updateCount: updateCount.mutate,
     removeFromCart: removeFromCart.mutate,
-    addToCartLoading: addToCart.isPending,
+    addToCartLoading: (productId) => loadingIds.includes(productId),
     updateCountLoading: updateCount.isPending,
     removeFromCartLoading: removeFromCart.isPending,
   };

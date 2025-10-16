@@ -7,6 +7,7 @@ import Layout from "./components/Layout/Layout";
 import Home from "./components/Home/Home";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import Cart from "./components/Cart/Cart";
+import Wishlist from "./components/Wishlist/Wishlist";
 import Register from "./components/Register/Register";
 import NotFound from "./components/NotFound/NotFound";
 import Login from "./components/Login/Login";
@@ -45,6 +46,14 @@ const routers = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Cart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/wishlist",
+        element: (
+          <ProtectedRoute>
+            <Wishlist />
           </ProtectedRoute>
         ),
       },

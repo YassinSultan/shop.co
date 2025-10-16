@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Navigate, NavLink, useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
-import { IoCartOutline } from "react-icons/io5";
+import { IoCartOutline, IoHeartOutline } from "react-icons/io5";
 import { useCart } from "../../hooks/useCart";
 // import style from "./Navbar.module.css";
 export default function Navbar() {
@@ -116,6 +116,11 @@ export default function Navbar() {
                             </span>
                           </span>
                         )}
+                      </div>
+                    </Link>
+                    <Link to={"/wishlist"}>
+                      <div className="relative text-2xl">
+                        <IoHeartOutline />
                       </div>
                     </Link>
                     <span
