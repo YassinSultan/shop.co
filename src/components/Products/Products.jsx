@@ -17,7 +17,7 @@ import Loading from "../Loading/Loading";
 export default function Products({ queryName = "products", ...filters }) {
   const { addToCart, addToCartLoading } = useCart();
   const { addToWishlist, addToWishlistLoading } = useWishlist();
-  let { data, isLoading } = useQuery({
+  let { data, isPending } = useQuery({
     queryKey: [`${queryName}`],
     queryFn: () => getProducts({ ...filters }),
     gcTime: 5 * 60 * 1000, // 5 minutes
@@ -26,14 +26,15 @@ export default function Products({ queryName = "products", ...filters }) {
   });
 
   // Loading
-  if (isLoading) {
+  if (isPending && !data) {
     // skelton loading
     return <ProductSkeleton limit={filters.limit} />;
   }
+  console.log(data.data);
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
-        {data.map((product) => {
+        {data.data.map((product) => {
           // calculate stars
           const fullStars = Math.floor(product.ratingsAverage);
           const hasHalfStar = product.ratingsAverage % 1 !== 0;
