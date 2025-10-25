@@ -22,7 +22,7 @@ export default function Products({ queryName = "products", ...filters }) {
     queryFn: () => getProducts({ ...filters }),
     gcTime: 5 * 60 * 1000, // 5 minutes
     // staleTime: 5 * 60 * 1000, // 5 minutes
-    select: (data) => data.data.data,
+    select: (data) => data.data,
   });
 
   // Loading

@@ -93,6 +93,16 @@ export default function Navbar() {
                         >
                           Home
                         </NavLink>
+                        <NavLink
+                          to="/shop"
+                          className={({ isActive }) =>
+                            `py-2 text-sm font-medium text-text-2 ${
+                              isActive ? "underline" : "opacity-50"
+                            }`
+                          }
+                        >
+                          Shop
+                        </NavLink>
                       </div>
                     </>
                   )}
@@ -109,10 +119,10 @@ export default function Navbar() {
                     <Link to={"/cart"}>
                       <div className="relative text-2xl">
                         <IoCartOutline />
-                        {cart?.data.data?.products?.length > 0 && (
+                        {cart?.data?.products?.length > 0 && (
                           <span>
                             <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
-                              {cart?.data.numOfCartItems}
+                              {cart?.numOfCartItems}
                             </span>
                           </span>
                         )}
@@ -155,6 +165,16 @@ export default function Navbar() {
                       }
                     >
                       Home
+                    </NavLink>
+                    <NavLink
+                      to="/shop"
+                      className={({ isActive }) =>
+                        `block rounded-md px-3 py-2 text-base font-medium ${
+                          isActive ? "bg-primary-1 text-text" : "opacity-50"
+                        }`
+                      }
+                    >
+                      Shop
                     </NavLink>
                   </div>
                   <span

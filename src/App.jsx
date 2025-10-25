@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./App.css";
 import Layout from "./components/Layout/Layout";
 import Home from "./components/Home/Home";
+import Shop from "./components/Shop/Shop";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import Cart from "./components/Cart/Cart";
 import Wishlist from "./components/Wishlist/Wishlist";
@@ -38,6 +39,14 @@ const routers = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ProductDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/shop",
+        element: (
+          <ProtectedRoute>
+            <Shop />
           </ProtectedRoute>
         ),
       },

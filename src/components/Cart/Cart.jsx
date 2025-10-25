@@ -8,25 +8,26 @@ export default function Cart() {
   const { cart, isLoading, updateCount, removeFromCart } = useCart();
   const navigate = useNavigate();
   if (isLoading) return <Loading />;
+  console.log(cart);
   return (
     <>
       {cart ? (
         <>
           <div className="container mx-auto py-10">
-            <h2 className="text-4xl font-extrabold mb-10 font-title">
+            <h2 className="text-4xl font-extrabold mb-10 font-heading">
               Your Cart
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Cart Items */}
               <div className="lg:col-span-2 flex flex-col gap-4">
-                {cart?.data.data?.products?.map((product) => (
+                {cart?.data?.products?.map((product) => (
                   <div
                     key={product._id}
                     className="relative flex gap-4 p-4 bg-white shadow-md rounded-xl items-center"
                   >
                     {/* remove button */}
                     <div
-                      onClick={() => removeFromCart(product.product._id)}
+                      onClick={() => removeFromCart(product._id)}
                       className="absolute top-4 right-4 cursor-pointer hover:text-red-500"
                     >
                       <BiTrash /> {removeFromCart.isPending && <Loading />}
@@ -65,10 +66,10 @@ export default function Cart() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => {
-                              updateCount({
-                                productId: product.product._id,
-                                count: product.count - 1,
-                              });
+                              updateCount(
+                                product.product._id,
+                                product.count - 1
+                              );
                             }}
                             disabled={
                               product.count === 1 || updateCount.isLoading
@@ -82,10 +83,10 @@ export default function Cart() {
                           </span>
                           <button
                             onClick={() => {
-                              updateCount({
-                                productId: product.product._id,
-                                count: product.count + 1,
-                              });
+                              updateCount(
+                                product.product._id,
+                                product.count + 1
+                              );
                             }}
                             className="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
                           >
@@ -104,7 +105,7 @@ export default function Cart() {
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-700">Subtotal</span>
                   <span className="font-semibold">
-                    {cart.data.data.totalCartPrice} EGP
+                    {cart.data.totalCartPrice} EGP
                   </span>
                 </div>
                 <div className="flex justify-between mb-2">
@@ -114,7 +115,7 @@ export default function Cart() {
                 <hr className="my-3" />
                 <div className="flex justify-between text-xl font-bold mb-6">
                   <span>Total</span>
-                  <span>{cart.data.data.totalCartPrice} EGP</span>
+                  <span>{cart.data.totalCartPrice} EGP</span>
                 </div>
                 <button
                   onClick={() => navigate("/checkout")}
