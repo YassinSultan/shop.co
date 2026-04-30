@@ -7,30 +7,19 @@ import {
   FaStarHalfAlt,
 } from "react-icons/fa";
 import { Link } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../services/productService";
 import { useCart } from "../../hooks/useCart";
 import ProductSkeleton from "../ProductSkelton/ProductSkelton";
 import { useWishlist } from "../../hooks/useWishlist";
 import Loading from "../Loading/Loading";
 // import style from "./Products.module.css";
-export default function Products({ queryName = "products", ...filters }) {
+export default function Products({ data, isPending, filters }) {
   const { addToCart, addToCartLoading } = useCart();
   const { addToWishlist, addToWishlistLoading } = useWishlist();
-  let { data, isPending } = useQuery({
-    queryKey: [`${queryName}`],
-    queryFn: () => getProducts({ ...filters }),
-    gcTime: 5 * 60 * 1000, // 5 minutes
-    // staleTime: 5 * 60 * 1000, // 5 minutes
-    select: (data) => data.data,
-  });
-
   // Loading
   if (isPending && !data) {
     // skelton loading
-    return <ProductSkeleton limit={filters.limit} />;
+    return <ProductSkeleton limit={filters?.limit || 12} />;
   }
-  console.log(data.data);
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">

@@ -3,8 +3,21 @@ import CategoriesSwiper from "../CategoriesSwiper/CategoriesSwiper";
 import AdsSwiper from "../AdsSwiper/AdsSwiper";
 import Products from "../Products/Products";
 import HeroSection from "../HeroSection/HeroSection";
+import useProductsQuery from "../../hooks/useProductsQuery";
 // import style from "./Home.module.css";
 export default function Home() {
+  const { data: topRatedProducts, isPending: isTopRatedPending } =
+    useProductsQuery({
+      queryName: "top-rated",
+      sort: "-ratingsAverage",
+      limit: "4",
+    });
+  const { data: topSellingProducts, isPending: isTopSellingPending } =
+    useProductsQuery({
+      queryName: "top-selling",
+      sort: "sold",
+      limit: "4",
+    });
   return (
     <>
       <div className="w-full">
@@ -22,7 +35,11 @@ export default function Home() {
           <h2 className="!font-title !text-5xl uppercase !font-extrabold text-center mb-10">
             Top Rated
           </h2>
-          <Products queryName="top-rated" sort="-ratingsAverage" limit="4" />
+          <Products
+            data={topRatedProducts}
+            isPending={isTopRatedPending}
+            filters={{ limit: "4" }}
+          />
           <div className="flex justify-center mt-10">
             <button className="btn-primary">Show More</button>
           </div>
@@ -31,7 +48,11 @@ export default function Home() {
           <h2 className="!font-title !text-5xl uppercase !font-extrabold text-center mb-10">
             Top Selling
           </h2>
-          <Products queryName="top-selling" sort="sold" limit="4" />
+          <Products
+            data={topSellingProducts}
+            isPending={isTopSellingPending}
+            filters={{ limit: "4" }}
+          />
           <div className="flex justify-center mt-10">
             <button className="btn-primary">Show More</button>
           </div>

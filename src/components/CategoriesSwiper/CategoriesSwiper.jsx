@@ -12,16 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-
-import { getCategories } from "../../services/catergoriesService";
-import { useQuery } from "@tanstack/react-query";
+import useCategoriesQuery from "../../hooks/useCategoriesQuery";
 // import style from "./CategoriesSwiper.module.css";
 export default function CategoriesSwiper() {
-  let { data, isLoading } = useQuery({
-    queryKey: ["Categories"],
-    queryFn: getCategories,
-    select: (data) => data.data.data,
-  });
+  const { data, isLoading } = useCategoriesQuery();
 
   return (
     <Swiper
